@@ -51,7 +51,7 @@ app.get('/webhook', (req, res) => {
 
 app.post('/webhook', async (req, res) => {
     const body = req.body;
-    console.log(body)
+    console.log(JSON.stringify(body))
     if (body.object === 'whatsapp_business_account') {
         body.entry.forEach(async (entry) => {
             const changes = entry.changes;
