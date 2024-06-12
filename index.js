@@ -50,32 +50,39 @@ app.get('/webhook', (req, res) => {
 });
 
 app.post('/webhook', async (req, res) => {
-    const body = req.body;
-    console.log(JSON.stringify(body))
-    if (body.object === 'whatsapp_business_account') {
-        body.entry.forEach(async (entry) => {
-            const changes = entry.changes;
-            changes.forEach(async (change) => {
-                if (change.value.messages) {
-                    const messages = change.value.messages;
-                    for (const message of messages) {
-                        if (message.type === 'text') {
-                            const from = message.from;
-                            const text = message.text.body;
+    try {
+        const body = req.body;
+        console.log(body);
 
-                            // You can process the received message and send a response
-                            await sendMessage(from, "This is an automated response from Impact Weaver");
+        if (body.object === 'whatsapp_business_account') {
+            for (const entry of body.entry) {
+                const changes = entry.changes;
 
-                            console.log(`Received message: ${text} from: ${from}`);
+                for (const change of changes) {
+                    if (change.value.messages) {
+                        const messages = change.value.messages;
+
+                        for (const message of messages) {
+                            if (message.type === 'text') {
+                                const from = message.from;
+                                const text = message.text.body;
+
+                                // Process the received message and send a response
+                                await sendMessage(from, "This is an automated response from Impact Weaver");
+
+                                console.log(`Received message: ${text} from: ${from}`);
+                            }
                         }
                     }
                 }
-            });
-        });
-
-        res.sendStatus(200);
-    } else {
-        res.sendStatus(404);
+            }
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (error) {
+        console.error("Error processing webhook: ", error);
+        res.sendStatus(500);
     }
 });
 
