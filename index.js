@@ -25,6 +25,10 @@ app.use(cors(corsOptions))
 //     }
 // });
 
+app.get('/', (req, res) => {
+    res.send("This is a Chatbot application")
+})
+
 app.get('/webhook', (req, res) => {
     const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
     console.log(VERIFY_TOKEN)
