@@ -15,15 +15,15 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 
-// app.post('/', async (req, res) => {
-//     try {
-//         const response = await sendMessage();
-//         res.status(200).send(response);
-//     } catch (error) {
-//         console.error('Error sending message:', error);
-//         res.status(500).send(error);
-//     }
-// });
+app.post('/', async (req, res) => {
+    try {
+        const response = await sendMessage(process.env.RECIPIENT_WAID, "This is an automated response from Impact Weaver");
+        res.status(200).send(response);
+    } catch (error) {
+        console.error('Error sending message:', error);
+        res.status(500).send(error);
+    }
+});
 
 app.get('/', (req, res) => {
     res.send("This is a Chatbot application")
