@@ -37,6 +37,55 @@ async function sendMessage(to, body) {
     }
 }
 
+async function sendPoll(to, question, options) {
+  const data = {
+    messaging_product: 'whatsapp',
+    to: to,
+    type: 'interactive',
+    interactive: {
+      type: 'list',
+      header: {
+        type: 'text',
+        text: question
+      },
+      body: {
+        text: 'Please select an option:'
+      },
+      action: {
+        button: 'Select',
+        sections: [
+          {
+            title: 'Options',
+            rows: options.map((option, index) => ({
+              id: index + 1,
+              title: option
+            }))
+          }
+        ]
+      }
+    }
+  }
+  try {
+    const response = await axios.post(`https://graph.facebook.com/${process.env.VERSION}/${process.env.PHONE_NUMBER_ID}/messages`, 
+      data,
+      {
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
+          "User-Agent": "axios/1.7.2"
+        }
+      }
+    )
+
+    console.log('Poll sent successfully:', response.data);
+    return response.data
+  } catch (error) {
+    console.error('Error sending poll:', error.response ? error.response.data : error.message);
+  }
+}
+
 module.exports = {
   sendMessage: sendMessage,
+  sendPoll: sendPoll
 };

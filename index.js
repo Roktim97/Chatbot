@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors')
 require('dotenv').config();
-const { sendMessage } = require("./messageHelper");
+const { sendMessage, sendPoll } = require("./messageHelper");
 const app = express();
 
 app.use(express.json());
@@ -17,7 +17,7 @@ app.use(cors(corsOptions))
 
 app.post('/', async (req, res) => {
     try {
-        const response = await sendMessage(process.env.RECIPIENT_WAID, "This is an automated response from Impact Weaver");
+        const response = await sendPoll(process.env.RECIPIENT_WAID, 'What is your favorite color?', ['Red', 'Blue', 'Green']);
         res.status(200).send(response);
     } catch (error) {
         console.error('Error sending message:', error);
