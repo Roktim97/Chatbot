@@ -3,6 +3,7 @@ const cors = require('cors')
 require('dotenv').config();
 const { sendMessage, sendPoll } = require("./messageHelper");
 const app = express();
+const db = require("./models")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, multipart: true }));
