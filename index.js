@@ -52,10 +52,15 @@ app.get('/webhook', (req, res) => {
 app.post('/webhook', async (req, res) => {
     try {
         const body = req.body;
+        console.log('-----------body--------------')
         console.log(body)
+        console.log('-----------entry--------------')
         console.log(body.entry[0])
+        console.log('-----------value--------------')
         console.log(body.entry[0].changes[0].value)
+        console.log('-----------profile--------------')
         console.log(body.entry[0].changes[0].value.contacts[0].profile)
+        console.log('-----------text--------------')
         console.log(body.entry[0].changes[0].value.messages[0].text)
 
         if (body.object === 'whatsapp_business_account') {
